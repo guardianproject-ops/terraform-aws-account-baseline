@@ -1,0 +1,76 @@
+name: terraform-aws-account-baseline
+license: GPL3
+gitlab_repo: guardianproject-ops/terraform-aws-account-baseline
+
+description: Terraform module for bringing an AWS Control Tower workload/application account into governance.
+
+introduction: |-
+
+  This module should be used on your standard workload and application accounts.
+
+  The terraform-aws-account-baseline module enforces security and management best practices across AWS accounts. It provides standardized configurations for:
+
+      * Account security baselines
+      * Account management settings
+      * Compliance requirements
+
+  This module helps maintain consistent security controls and configurations when managing multiple AWS accounts through Terraform.
+
+  ### Features
+
+  #### Submodule: Account
+
+  **Usage**: Apply once to an account.
+
+    * AWS IAM Account Alias: Creates a custom account alias for simplified AWS account identification
+    * AWS IAM Account Password Policy: Sets strong password requirements for IAM users
+    * AWS S3 Account Public Access Block: Prevents public access to S3 buckets at the account level
+    * AWS IAM OpenID Connect Provider: Enables identity federation through OpenID Connect
+        * GitHub
+        * GitLab
+        * Keycloak
+
+
+  #### Submodule: Regional
+
+  **Usage**: Apply to each region in an account.
+
+  * EBS Encryption by Default: Ensures all new EBS volumes are automatically encrypted
+  * Block public EBS snapshot sharing: Prevents EBS snapshots from being shared publicly
+  * Terraform State Resources:
+      * Terraform State Bucket: Stores Terraform state files securely
+      * Terraform DynamoDB State Lock Table: Prevents concurrent state modifications
+
+usage: |-
+
+  ```terraform
+  module "account" {
+    source = "git::https://gitlab.com/guardianproject-ops/terraform-aws-account-baseline//modules/account?ref=main"
+  }
+
+  module "region_main" {
+    source = "git::https://gitlab.com/guardianproject-ops/terraform-aws-account-baseline//modules/region?ref=main"
+    providers = {
+    aws =  aws
+    }
+  }
+
+  module "region_other" {
+    source = "git::https://gitlab.com/guardianproject-ops/terraform-aws-account-baseline//modules/region?ref=main"
+    providers = {
+      aws =  aws.other
+    }
+  }
+  ```
+
+  ## Documentation
+
+  Docs are nice!
+
+include:
+  - docs/terraform.md
+
+contributors:
+  - name: "Abel Luck"
+    gitlab: "abelxluck"
+    gravatar: 0f605397e0ead93a68e1be26dc26481a
