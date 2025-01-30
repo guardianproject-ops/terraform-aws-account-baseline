@@ -21,3 +21,25 @@ variable "aws_ebs_snapshot_block_public_access_state" {
   default     = "block-all-sharing"
   description = "The mode in which to enable 'Block public access for snapshots' for the region. Allowed values are block-all-sharing, block-new-sharing, unblocked."
 }
+
+
+variable "ec2_instance_metadata_defaults_enabled" {
+  type        = bool
+  default     = true
+  description = "Set to true to enable EC2 instance metadata defaults"
+}
+
+variable "ec2_instance_metadata_defaults" {
+  type = object({
+    http_enabled                = bool
+    http_token_required         = bool
+    http_put_response_hop_limit = number
+    instance_tags_enabled       = bool
+  })
+  default = {
+    http_enabled                = true
+    http_token_required         = true
+    http_put_response_hop_limit = 1
+    instance_tags_enabled       = false
+  }
+}
