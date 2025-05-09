@@ -52,3 +52,12 @@ module "aws_support_role" {
   poweruser_role_policy_arns = ["arn:aws:iam::aws:policy/AWSSupportAccess"]
   create_poweruser_role      = true
 }
+
+module "break_glass" {
+  source = "git::https://gitlab.com/guardianproject-ops/terraform-aws-account-break-glass//modules/target?ref=v0.0.1"
+
+  allow_break_glass      = var.break_glass.enabled
+  break_glass_principals = var.break_glass.principals
+  break_glass_policy_arn = var.break_glass.policy_arn
+  break_glass_role_name  = var.break_glass.role_name
+}
